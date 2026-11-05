@@ -1,5 +1,5 @@
 const BASE = (
-  import.meta.env.VITE_API_BASE || '/api'
+  import.meta.env.VITE_API_BASE || 'https://dormfind.onrender.com'
 ).replace(/\/$/, '');
 
 let tokens;
