@@ -157,11 +157,24 @@ export async function api(
     });
   }
 
-  const data = await response.json().catch(() => {
-    throw new Error(
-      'Backend returned an invalid response. Check the backend terminal and PHP logs.'
-    );
+ const raw = await response.text();
+
+let data;
+
+try {
+  data = JSON.parse(raw);
+} catch {
+  console.error('Invalid API response:', {
+    url: response.url,
+    status: response.status,
+    contentType: response.headers.get('content-type'),
+    responsePreview: raw.slice(0, 500)
   });
+
+  throw new Error(
+    `Invalid JSON response from ${path} (HTTP ${response.status}).`
+  );
+}
 
   if (!response.ok) {
     throw new Error(
